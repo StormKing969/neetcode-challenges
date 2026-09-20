@@ -1,7 +1,9 @@
 package Top_K_Elements_In_List;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,8 +38,26 @@ import java.util.Set;
 public class TopKElementsInList {
 
     public static int[] topKFrequent(int[] nums, int k) {
-        // TODO: implement
-        return new int[]{};
+        Map<Integer, Integer> numberCounter = new HashMap<>();
+        for (int ele : nums) {
+            numberCounter.put(ele, numberCounter.getOrDefault(ele, 0) + 1);
+        }
+
+        int[] returnNumberList = new int[k];
+        while (k != 0) {
+            int max = 0;
+            for (Map.Entry<Integer, Integer> ele : numberCounter.entrySet()) {
+                if (ele.getValue() > max) {
+                    returnNumberList[k - 1] = ele.getKey();
+                    max = ele.getValue();
+                }
+            }
+
+            numberCounter.remove(returnNumberList[k - 1]);
+            k--;
+        }
+
+        return returnNumberList;
     }
 
     static void main() {
@@ -46,8 +66,8 @@ public class TopKElementsInList {
 
         total++;
         if (checkResult(
-                topKFrequent(new int[]{1, 2, 2, 3, 3, 3}, 2),
-                new int[]{2, 3})) {
+                topKFrequent(new int[]{1,1,1,2,2,3}, 2),
+                new int[]{2, 1})) {
             passed++;
         }
 
